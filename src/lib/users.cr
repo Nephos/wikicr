@@ -23,6 +23,7 @@ class Wikicr::Users
     @list = File.read(@file).split("\n")
                             .select { |line| !line.empty? }
                             .map { |line| u = User.new(line); {u.name, u} }.to_h
+    self
   end
 
   # save the users into the file
@@ -30,12 +31,14 @@ class Wikicr::Users
     File.open(@file, "w") do |fd|
       @list.each { |name, user| user.to_s(fd) }
     end
+    self
   end
 
   # add an user to the list
   def add(u : User)
     raise AlreadyExist.new "User #{u.name} already exists" if (@list[u.name]?)
     @list[u.name] = u
+    self
   end
 
   # remove an user from the list
@@ -48,6 +51,7 @@ class Wikicr::Users
   def remove(name : String)
     raise NotExist.new "User #{name} is not in the list" if (!@list[name]?)
     @list.remove(name)
+    self
   end
 
   # replace an entry
@@ -61,6 +65,7 @@ class Wikicr::Users
     else
       @list[u.name] = u
     end
+    self
   end
 
   # find an user based on its name

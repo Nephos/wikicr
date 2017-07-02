@@ -64,6 +64,37 @@ struct Wikicr::Page
     self.jail user
     Dir.mkdir_p self.dirname
     File.write self.file, body
+    commit!(user)
+  end
+
+  private def commit!(user)
+    puts "---------------  COMMIT ! ------------"
+    # You can check git_repository_head_unborn() to see if HEAD points at a reference or not.
+    tree_id = Pointer(LibGit2::Oid).null
+    parent_id = Pointer(LibGit2::Oid).null
+    commit_id = Pointer(LibGit2::Oid).null
+    tree = nil.as(LibGit2::X_Tree)
+    parent = nil.as(LibGit2::X_Commit)
+    index = nil.as(LibGit2::X_Index)
+
+    puts "repository_index"
+    puts LibGit2.repository_index(pointerof(index), Wikicr::Git.repo)
+    pp index, index.address, index.value
+    puts "index_write_tree"
+    puts LibGit2.index_write_tree(tree.as(Pointer(LibGit2::Oid)), index)
+    pp tree
+
+    puts "reference_name_to_id"
+    puts LibGit2.reference_name_to_id(parent_id, Wikicr::Git.repo, "HEAD")
+    puts "commit_lookup"
+    puts LibGit2.commit_lookup(pointerof(parent), Wikicr::Git.repo, parent_id)
+
+    sign = Pointer(LibGit2::Signature).null
+    puts "signature_now"
+    puts LibGit2.signature_now(pointerof(sign), user.name, "#{user.name}@localhost")
+
+    puts "commit_create"
+    puts LibGit2.commit_create(commit_id, Wikicr::Git.repo, "HEAD", sign, sign, "UTF-8", "update #{self.name}", tree.value, 1, pointerof(parent))
   end
 
   def delete(user : User)
