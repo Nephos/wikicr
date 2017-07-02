@@ -22,6 +22,6 @@ dependencies:
   slang:
     github: jeromegn/slang
     branch: master
-  crystal-libgit2:
-    github: puppetpies/crystal-libgit2
+  git:
+    github: mosop/git
     branch: master

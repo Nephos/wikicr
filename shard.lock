@@ -1,8 +1,8 @@
 version: 1.0
 shards:
-  crystal-libgit2:
-    github: puppetpies/crystal-libgit2
-    commit: e6992b53f6af9c2bef0f1f4fcb4424ce6ada956b
+  git:
+    github: mosop/git
+    commit: 27cc31b40fc358457b37ab12b2b572c97200755b
 
   kemal:
     github: kemalcr/kemal
@@ -19,6 +19,10 @@ shards:
   radix:
     github: luislavena/radix
     version: 0.3.8
+
+  safec:
+    github: mosop/safec
+    version: 0.2.1
 
   slang:
     github: jeromegn/slang

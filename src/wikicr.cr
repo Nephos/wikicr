@@ -4,7 +4,7 @@ require "markdown"
 require "kemal"
 require "kemal-session"
 require "kilt/slang"
-require "crystal-libgit2"
+require "git"
 
 require "./version"
 require "./lib"

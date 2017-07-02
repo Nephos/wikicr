@@ -70,31 +70,30 @@ struct Wikicr::Page
   private def commit!(user)
     puts "---------------  COMMIT ! ------------"
     # You can check git_repository_head_unborn() to see if HEAD points at a reference or not.
-    tree_id = Pointer(LibGit2::Oid).null
-    parent_id = Pointer(LibGit2::Oid).null
-    commit_id = Pointer(LibGit2::Oid).null
-    tree = nil.as(LibGit2::X_Tree)
-    parent = nil.as(LibGit2::X_Commit)
-    index = nil.as(LibGit2::X_Index)
-
+    tree_id = Pointer(Git::C::Oid).null
+    parent_id = Pointer(Git::C::Oid).null
+    commit_id = Pointer(Git::C::Oid).null
+    tree = nil.as(Git::C::X_Tree)
+    parent = nil.as(Git::C::X_Commit)
+    index = nil.as(Git::C::X_Index)
     puts "repository_index"
-    puts LibGit2.repository_index(pointerof(index), Wikicr::Git.repo)
+    puts Git::C.repository_index(pointerof(index), Wikicr.repo.safe)
     pp index, index.address, index.value
     puts "index_write_tree"
-    puts LibGit2.index_write_tree(tree.as(Pointer(LibGit2::Oid)), index)
+    puts Git::C.index_write_tree(tree.as(Pointer(Git::C::Oid)), index)
     pp tree
 
     puts "reference_name_to_id"
-    puts LibGit2.reference_name_to_id(parent_id, Wikicr::Git.repo, "HEAD")
+    puts Git::C.reference_name_to_id(parent_id, Wikicr.repo.safe, "HEAD")
     puts "commit_lookup"
-    puts LibGit2.commit_lookup(pointerof(parent), Wikicr::Git.repo, parent_id)
+    puts Git::C.commit_lookup(pointerof(parent), Wikicr.repo.safe, parent_id)
 
-    sign = Pointer(LibGit2::Signature).null
+    sign = Pointer(Git::C::Signature).null
     puts "signature_now"
-    puts LibGit2.signature_now(pointerof(sign), user.name, "#{user.name}@localhost")
+    puts Git::C.signature_now(pointerof(sign), user.name, "#{user.name}@localhost")
 
     puts "commit_create"
-    puts LibGit2.commit_create(commit_id, Wikicr::Git.repo, "HEAD", sign, sign, "UTF-8", "update #{self.name}", tree.value, 1, pointerof(parent))
+    puts Git::C.commit_create(commit_id, Wikicr.repo.safe, "HEAD", sign, sign, "UTF-8", "update #{self.name}", tree.value, 1, pointerof(parent))
   end
 
   def delete(user : User)
