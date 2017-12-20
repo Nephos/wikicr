@@ -2,9 +2,9 @@ name: wikicr
 version: 0.1.0
 
 authors:
-  - Amber <contact@ambercr.io>
+  - Arthur Poulet <arthur.poulet@sceptique.eu>
 
-crystal: 0.23.0
+crystal: 0.23.1
 
 license: MIT
 
