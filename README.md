@@ -8,7 +8,7 @@ The pages of the wiki are written in markdown and committed on the git repositor
 
 ### Dependencies
 
-Verify that you have crystal v0.23.0 or greater installed, as well as shards and git.
+Verify that you have crystal v0.26.1 or greater installed, as well as shards and git.
 
 ### Get the application
 

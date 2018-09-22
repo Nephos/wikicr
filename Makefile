@@ -11,9 +11,9 @@ release:
 test:
 	crystal spec
 deps:
-	crystal deps install
+	shards install
 deps_update:
-	crystal deps update
+	shards update
 deps_opt:
 	@[ -d lib/ ] || make deps
 doc:
