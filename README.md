@@ -1,3 +1,5 @@
+**Migrated to <https://git.sceptique.eu/Sceptique/wikicr>**
+
 # wikicr
 
 Wiki in crystal and markdown
