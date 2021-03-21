@@ -45,9 +45,7 @@ class Acl::Groups < Lockable
   # Check if an `Entity` has a group with the required permissions to operate.
   #
   # ```
-  # acls = Groups.new ...
-  # user = User.new ...
-  # acls.permitted?(user, "/my/path", Perm::Read)
+  # acls = Groups.new...user = User.new...acls.permitted?(user, "/my/path", Perm::Read)
   # ```
   def permitted?(entity : Acl::Entity, path : String, access : Acl::Perm)
     entity.groups.any? do |group|

@@ -141,7 +141,7 @@ struct Wikicr::Page
     begin
       Dir.cd Wikicr::OPTIONS.basedir
       puts `git add -- #{@path}`
-      puts `git commit --no-gpg-sign --author \"#{user.name} <#{user.name}@localhost>\" -m \"#{message} #{@url}\" -- #{@path} #{other_files.join(" ")}`
+      puts `git commit --no-gpg-sign --author "#{user.name} <#{user.name}@localhost>" -m "#{message} #{@url}" -- #{@path} #{other_files.join(" ")}`
     ensure
       Dir.cd dir
     end
