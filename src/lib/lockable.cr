@@ -5,6 +5,7 @@ abstract class Lockable
   abstract def load!
   abstract def save!
 
+  @[YAML::Field(key: "lock", ignore: true)]
   @lock : Mutex = Mutex.new
 
   # Execute some operation on the object, and then save it.

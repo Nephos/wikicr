@@ -1,34 +1,34 @@
-version: 1.0
+version: 2.0
 shards:
   exception_page:
-    github: crystal-loot/exception_page
-    version: 0.1.1
+    git: https://github.com/crystal-loot/exception_page.git
+    version: 0.1.4
 
   kemal:
-    github: kemalcr/kemal
-    commit: b389022b35202319b59396f30b3cac87fd8d393a
+    git: https://github.com/kemalcr/kemal.git
+    version: 0.27.0+git.commit.2d46beea5debefbb836a7e148a8e24452608471b
 
   kemal-flash:
-    github: neovintage/kemal-flash
-    commit: c0eb4e91573322f05ddf602abbfe748c1d2fd184
+    git: https://github.com/Nephos/kemal-flash.git
+    version: 0.1.0+git.commit.d1ea6ce9caaed840a062e07a9223cc404cf3adc7
 
   kemal-session:
-    github: kemalcr/kemal-session
-    commit: b98aec297110f148cfdf0c250810bdcce30aede9
+    git: https://github.com/kemalcr/kemal-session.git
+    version: 0.13.0+git.commit.51244a899f9004082a5f58fa8fdb4be0eb5bd530
 
   kilt:
-    github: jeromegn/kilt
+    git: https://github.com/jeromegn/kilt.git
     version: 0.4.0
 
   markd:
-    github: icyleaf/markd
-    commit: 69f49f565bb4a015f8745242f6e4daf9b510782d
+    git: https://github.com/icyleaf/markd.git
+    version: 0.3.0+git.commit.5d5087e4c3be46e499966cc493b594b819f64c63
 
   radix:
-    github: luislavena/radix
-    version: 0.3.8
+    git: https://github.com/luislavena/radix.git
+    version: 0.4.0
 
   slang:
-    github: jeromegn/slang
-    commit: f33c23be9d477a07627a124d0b79d6cdb7a9132e
+    git: https://github.com/jeromegn/slang.git
+    version: 1.7.2+git.commit.9b41cef0ddf2cd5ba34094742e954570f170c284
 

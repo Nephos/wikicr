@@ -52,7 +52,7 @@ struct Wikicr::Page
   end
 
   def self.sanitize(url : String)
-    Index::Entry.title_to_slug URI.unescape(url)
+    Index::Entry.title_to_slug URI.decode_www_form(url)
   end
 
   def read_title!

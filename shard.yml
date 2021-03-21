@@ -19,9 +19,8 @@ dependencies:
     github: kemalcr/kemal-session
     branch: master
   kemal-flash:
-    github: neovintage/kemal-flash
-    branch: master
-    #version: 0.1.0
+    github: Nephos/kemal-flash
+    branch: bugfix/update-crystal-json
   markd:
     github: icyleaf/markd
     branch: master

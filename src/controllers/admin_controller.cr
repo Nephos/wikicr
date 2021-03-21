@@ -44,7 +44,7 @@ class AdminController < ApplicationController
     perm_str = params.body["perm"]
     perm = Acl::PERM_STR[perm_str]
     Wikicr::ACL.transaction! do |acls|
-      acls.add Acl::Group.new group if acls[group]?.nil?
+      acls.add Acl::Group.new(group) if acls[group]?.nil?
       acls[group][path] = perm
     end
     flash["success"] = "ACL #{group} :: #{path} :: #{perm} has been added"

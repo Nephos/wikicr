@@ -6,14 +6,13 @@ require "../internal_links"
 struct Wikicr::Page
   class Index < Lockable
     class Entry
-      YAML.mapping(
-        path: String,  # path of the file /srv/wiki/data/xxx
-        url: String,   # real url of the page /pages/xxx
-        title: String, # Any title
-        slug: String,  # Exact matching title
-        toc: Page::TableOfContent::Toc,
-        intlinks: Page::InternalLinks::LinkList,
-      )
+      include YAML::Serializable
+      property path : String  # path of the file /srv/wiki/data/xxx
+      property url : String   # real url of the page /pages/xxx
+      property title : String # Any title
+      property slug : String  # Exact matching title
+      property toc : Page::TableOfContent::Toc
+      property intlinks : Page::InternalLinks::LinkList
 
       def initialize(@path, @url, @title, toc : Bool = false)
         @slug = Entry.title_to_slug title

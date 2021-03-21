@@ -1,4 +1,4 @@
-require "markdown"
+require "markd"
 require "yaml"
 require "kemal"
 require "kemal-session"

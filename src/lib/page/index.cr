@@ -6,10 +6,9 @@ require "./index/entry"
 # like related url, the title, the table of content, ...
 struct Wikicr::Page
   class Index < Lockable
-    YAML.mapping(
-      file: String,
-      entries: Hash(String, Entry) # path, entry
-    )
+    include YAML::Serializable
+    property file : String
+    property entries : Hash(String, Entry) # path, entry
 
     def initialize(@file : String)
       @entries = {} of String => Entry

@@ -15,11 +15,10 @@ class Wikicr::Users < Lockable
   # getter default : User?
   # @list : Hash(String, User)
 
-  YAML.mapping(
-    file: String,
-    default: User?,
-    list: Hash(String, User)
-  )
+  include YAML::Serializable
+  property file : String
+  property default : User?
+  property list : Hash(String, User)
 
   def initialize(@file, @default : User? = nil)
     @list = {} of String => User

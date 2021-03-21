@@ -9,16 +9,11 @@ class Wikicr::User
   class Invalid < Exception
   end
 
-  # getter name : String
-  # getter password : String
-  # getter groups : Array(String)
-
-  YAML.mapping(
-    name: String,
-    password: String,
-    groups: Array(String),
-    token: String?,
-  )
+  include YAML::Serializable
+  property name : String
+  property password : String
+  property groups : Array(String)
+  property token : String?
 
   # ```
   # User.new "admin", "password", %w(admin user)

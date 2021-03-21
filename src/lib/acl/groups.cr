@@ -6,13 +6,10 @@ require "./entity"
 
 # The Groups is used to handle a set of uniq `Group`, by *name*.
 class Acl::Groups < Lockable
-  # @groups : Hash(String, Acl::Group)
-  # property file : String
+  include YAML::Serializable
 
-  YAML.mapping(
-    file: String,
-    groups: Hash(String, Acl::Group)
-  )
+  property file : String
+  property groups : Hash(String, Acl::Group)
 
   # ```
   # acls = Acl::Groups.new
@@ -42,7 +39,7 @@ class Acl::Groups < Lockable
   end
 
   def self.read(file : String)
-    Acl::Groups.from_yaml(File.read file)
+    Acl::Groups.from_yaml File.read(file)
   end
 
   # Check if an `Entity` has a group with the required permissions to operate.
