@@ -3,9 +3,9 @@ NAME=wikicr
 all: deps_opt build
 
 run:
-	crystal run src/$(NAME).cr
+	crystal run src/$(NAME).cr --error-trace
 build:
-	crystal build src/$(NAME).cr --stats
+	crystal build src/$(NAME).cr --stats --error-trace
 release:
 	crystal build src/$(NAME).cr --stats --release
 test:

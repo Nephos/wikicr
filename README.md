@@ -10,7 +10,7 @@ The pages of the wiki are written in markdown and committed on the git repositor
 
 ### Dependencies
 
-Verify that you have crystal v0.36.1 or greater installed, as well as shards and git.
+Verify that you have crystal v1.0.0 or greater installed, as well as shards and git.
 
 ### Get the application
 
@@ -163,4 +163,4 @@ The rest is boring stuff (code factorization, make everything configurable, docu
 
 ## Contributors
 
-- [Nephos](https://github.com/Nephos) Arthur Poulet - creator, maintainer
+- [Sceptique](https://git.sceptique.eu/Sceptique) Arthur Poulet - creator, maintainer
