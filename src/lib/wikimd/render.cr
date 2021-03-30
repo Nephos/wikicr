@@ -90,10 +90,19 @@ struct Wikicr::Markdown
         # render before the special_tag
         b << str[@cursor..(special_tag_begin - 1)] unless special_tag_begin == 0
         # write the markdown link
-        b << "**Special tag party:** *#{text}*\n"
+        b << "<!-- SPECIAL_TAG :: #{text} :: -->\n"
+        special_tag_name, special_tag_value = text.split(">")
+        render_special_tag_tag b, special_tag_value.split(' ') if special_tag_name == "tag"
         move_cursor_after special_tag_end + 1
       else
         render_full_line b, str
+      end
+    end
+
+    private def render_special_tag_tag(b : String::Builder, tag_list : Array(String))
+      b << "**Tags**\n"
+      tag_list.each do |current_tag|
+        b << "<span class=\"badge badge-primary\">#{current_tag}</span>\n"
       end
     end
   end
