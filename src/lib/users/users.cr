@@ -121,7 +121,7 @@ class Wikicr::Users < Lockable
   # Returns nil if it fails
   def auth?(name : String, password : String) : User?
     user = find(name)
-    user && user.password_encrypted == password ? user : nil
+    user && user.password_encrypted.verify(password) ? user : nil
   end
 
   def auth_token?(name : String, token : String) : User?
