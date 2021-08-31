@@ -1,5 +1,3 @@
-require "tempfile"
-
 describe Wikicr::Markdown do
   it "test internal links" do
     page = Wikicr::Page.new("test")
@@ -30,5 +28,13 @@ describe Wikicr::Markdown do
       should eq("[title a bit longer](/pages/test-longer)")
     Wikicr::Markdown.to_markdown("[[test-empty|]]", page, index).
       should eq("[test-empty](/pages/test-empty)")
+  end
+end
+
+describe WikiMarkd do
+  it "basic markd patching" do
+    raw = "hello <<test1>>"
+    html = %Q{<p>hello <a href="http://test.cr" title="tiiitle">test1</a></p>\n}
+    WikiMarkd.to_html(raw).should eq(html)
   end
 end
