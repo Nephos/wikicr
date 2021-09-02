@@ -1,12 +1,16 @@
 version: 2.0
 shards:
+  backtracer:
+    git: https://github.com/sija/backtracer.cr.git
+    version: 1.2.1
+
   exception_page:
     git: https://github.com/crystal-loot/exception_page.git
-    version: 0.1.4
+    version: 0.2.0
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 1.0.0+git.commit.3fee0686362d7ab57048ae555bf875e278a278a3
+    version: 1.0.0+git.commit.218be2422172d330feb62c6a8abc7df5402fdb84
 
   kemal-flash:
     git: https://github.com/nephos/kemal-flash.git
@@ -14,15 +18,15 @@ shards:
 
   kemal-session:
     git: https://github.com/kemalcr/kemal-session.git
-    version: 1.0.0+git.commit.fca592fdd74578c3d5650cd3d9d89038416d7241
+    version: 1.0.0+git.commit.2ebaf68ed48da763a9cdd0f8dcbc6347981e115d
 
   kilt:
     git: https://github.com/jeromegn/kilt.git
-    version: 0.4.1
+    version: 0.6.1
 
   markd:
     git: https://github.com/icyleaf/markd.git
-    version: 0.4.0+git.commit.0901ec764b2e005b3b2aee35b8fe90770ca40f8b
+    version: 0.4.0+git.commit.f300c21a847a661c301bc80cf5cb0ef3d360c034
 
   radix:
     git: https://github.com/luislavena/radix.git
@@ -30,5 +34,5 @@ shards:
 
   slang:
     git: https://github.com/jeromegn/slang.git
-    version: 1.7.2+git.commit.9b41cef0ddf2cd5ba34094742e954570f170c284
+    version: 1.7.3+git.commit.901df64c9a1c1df91d3acd00762509c9b6d3cfd8
 
