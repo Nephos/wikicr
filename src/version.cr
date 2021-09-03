@@ -1,3 +1,3 @@
 module Wikicr
-  VERSION = "0.1.1"
+  VERSION = {{ `git tag|sort -h`.split("\n")[-2] }}
 end
