@@ -1,3 +1,5 @@
+require "./application_controller"
+
 class UsersController < ApplicationController
   # get /users/login
   def login

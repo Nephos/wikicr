@@ -6,6 +6,8 @@ require "./errors"
 
 require "./**"
 
+# This file initialize the state of the wiki, which is stored into the main module Wikicr
+# It may need to execute an initialisation to generate default values for `Acl::Groups`, `Wikicr::Users`, `Page::Index`
 module Wikicr
   # The dir *meta* contains users account (with encrypted password),
   # the index of the pages (with table of content, links, titles, ...)

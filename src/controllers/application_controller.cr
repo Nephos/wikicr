@@ -1,6 +1,7 @@
 # This files creates the main controller which is inherited by any other controller.
 # It also loads the controller and helpers.
 
+require "http"
 require "./application_controller/**"
 require "./helpers/**"
 

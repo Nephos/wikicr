@@ -1,3 +1,5 @@
+require "./application_controller"
+
 class PagesController < ApplicationController
   # get /sitemap
   def sitemap
