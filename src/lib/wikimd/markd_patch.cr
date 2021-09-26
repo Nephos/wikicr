@@ -1,7 +1,6 @@
 require "markd"
 
 module WikiMarkd
-
   module Rule
     WIKI_TAG = /^<<[[:graph:] ]+>>/i
   end
@@ -39,16 +38,16 @@ module WikiMarkd
     property page_index : Hash(String, String)? # TODO
 
     def initialize(
-         @time = false,
-         @gfm = false,
-         @toc = false,
-         @smart = false,
-         @source_pos = false,
-         @safe = false,
-         @prettyprint = false,
-         @base_url = nil,
-         @page_index = nil,
-       )
+      @time = false,
+      @gfm = false,
+      @toc = false,
+      @smart = false,
+      @source_pos = false,
+      @safe = false,
+      @prettyprint = false,
+      @base_url = nil,
+      @page_index = nil
+    )
       # puts "> Options.new Here you go <"
     end
   end
@@ -63,6 +62,7 @@ module WikiMarkd
   end
 
   include Markd
+
   def self.to_html(source : String, options = Options.new)
     # puts "> Markd#to_html Here you go <"
     return "" if source.empty?
@@ -70,5 +70,4 @@ module WikiMarkd
     renderer = HTMLRenderer.new(options)
     renderer.render(document)
   end
-
 end
