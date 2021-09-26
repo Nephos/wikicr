@@ -1,3 +1,7 @@
+require "yaml"
+
+# An Acl Path identify one or several resources based on joker `*`
+# in order to match several files.
 class Acl::Path
   include YAML::Serializable
   property value : String

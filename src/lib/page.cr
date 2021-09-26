@@ -108,7 +108,7 @@ struct Wikicr::Page
     new_page.jail
     Dir.mkdir_p File.dirname new_page.path
     File.rename self.path, new_page.path
-    commit! user, "rename", other_files: [new_page.path]
+    Wikicr::Git.commit! user, message: "rename #{@url}", files: [@path, new_page.path]
   end
 
   # Writes into the *file*, and commit.
@@ -117,34 +117,20 @@ struct Wikicr::Page
     Dir.mkdir_p self.dirname
     is_new = File.exists? @path
     File.write @path, body
-    commit! user, is_new ? "create" : "update"
+    Wikicr::Git.commit! user, message: (is_new ? "create #{@url}" : "update #{@url}"), files: [@path]
   end
 
   # Deletes the *file*, and commit
   def delete(user : Wikicr::User)
     self.jail
     File.delete @path
-    commit! user, "delete"
+    Wikicr::Git.commit! user, message: "delete #{@url}", files: [@path]
   end
 
   # Checks if the *file* exists
   def exists?
     self.jail
     File.exists? @path
-  end
-
-  # Save the modifications on the *file* into the git repository
-  # TODO: lock before commit
-  # TODO: security of jailed_file and self.name ?
-  def commit!(user : Wikicr::User, message, other_files : Array(String) = [] of String)
-    dir = Dir.current
-    begin
-      Dir.cd Wikicr::OPTIONS.basedir
-      puts `git add -- #{@path}`
-      puts `git commit --no-gpg-sign --author "#{user.name} <#{user.name}@localhost>" -m "#{message} #{@url}" -- #{@path} #{other_files.join(" ")}`
-    ensure
-      Dir.cd dir
-    end
   end
 end
 

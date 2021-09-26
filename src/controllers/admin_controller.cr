@@ -1,3 +1,5 @@
+require "./application_controller"
+
 class AdminController < ApplicationController
   # get /admin/users
   def users_show

@@ -1,3 +1,5 @@
+require "./application_controller"
+
 class HomeController < ApplicationController
   # get /
   def index

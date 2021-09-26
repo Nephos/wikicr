@@ -1,10 +1,11 @@
 require "yaml"
 
 require "./perm"
+require "./path"
 
 # The Group is identified by a *name* and has *permissions* on a set of paths.
 # It is used by `Groups`.
-# NOTE: I did not used Hash().new(default) because it is annoying with passing the permissions in the constructor
+# NOTE: I did not used `Hash().new(default)` because it is annoying with passing the permissions in the constructor
 class Acl::Group
   include YAML::Serializable
 
