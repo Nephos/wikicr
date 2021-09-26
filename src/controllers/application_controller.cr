@@ -19,6 +19,7 @@ class ApplicationController
 
   include Wikicr::Helpers::User
   include Wikicr::Helpers::Page
+  include Wikicr::Helpers::History
 
   getter env : HTTP::Server::Context
 

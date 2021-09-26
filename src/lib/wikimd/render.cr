@@ -79,7 +79,6 @@ struct Wikicr::Markdown
     end
 
     # Render an special_tag into the builder
-    # TODO: handle tag
     # TODO: handle meta-data
     private def render_special_tag(b : String::Builder, str : String, special_tag_begin : Int32)
       text_begin = special_tag_begin + 2
