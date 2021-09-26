@@ -12,12 +12,14 @@ struct Wikicr::Page
       property title : String # Any title
       property slug : String  # Exact matching title
       property toc : Page::TableOfContent::Toc
+      property tags : Array(String)
       property intlinks : Page::InternalLinks::LinkList
 
       def initialize(@path, @url, @title, toc : Bool = false)
         @slug = Entry.title_to_slug title
         @toc = toc ? Page::TableOfContent.toc(@path) : Page::TableOfContent::Toc.new
         @intlinks = Page::InternalLinks::LinkList.new
+        @tags = [] of String
       end
 
       def self.title_to_slug(title : String) : String
