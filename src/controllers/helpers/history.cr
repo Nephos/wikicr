@@ -19,10 +19,11 @@ module Wikicr::Helpers::History
 
     def <<(page : Wikicr::Page) : self
       push(page.real_url)
-      pop_amount = size - KEEP_ENTRIES
-      pop(pop_amount) if pop_amount > 0
+      uniq!
+      shift_amount = size - KEEP_ENTRIES
+      shift(shift_amount) if shift_amount > 0
 
-      @app.set_cookie name: "user.history", value: to_s, expires: 14.days.from_now
+      @app.set_cookie name: "user.history", value: to_s, expires: 14.days.from_now, path: "/pages"
 
       self
     end
@@ -33,9 +34,9 @@ module Wikicr::Helpers::History
   end
 
   def history : HistoryStorage
-    current_history = session.string?("user.history")
+    current_history = cookies["user.history"]?
     if current_history
-      HistoryStorage.new(self).parse(current_history)
+      HistoryStorage.new(self).parse(current_history.value)
     else
       HistoryStorage.new(self)
     end
