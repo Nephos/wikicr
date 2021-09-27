@@ -20,7 +20,6 @@ class PagesController < ApplicationController
   def show
     acl_permit! :read
     flash["danger"] = params.query["flash.danger"] if params.query["flash.danger"]?
-    pp params.url
     page = Wikicr::Page.new url: params.url["path"], read_title: true
     if (params.query["edit"]?) || !page.exists?
       show_edit(page)
@@ -41,6 +40,7 @@ class PagesController < ApplicationController
     Wikicr::ACL.load!
     groups_read = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Read, true
     groups_write = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Write, true
+    history << page
     render "show.slang"
   end
 

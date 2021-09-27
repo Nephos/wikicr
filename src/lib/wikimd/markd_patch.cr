@@ -2,11 +2,10 @@ require "markd"
 require "../page/index"
 
 module WikiMarkd
-
   module Rule
     WIKI_TAG = {
       autolink: /^<<([[:graph:] ]+)>>/i,
-      default: /^\{\{([[:graph:] ]+)\}\}/i,
+      default:  /^\{\{([[:graph:] ]+)\}\}/i,
     }
   end
 
@@ -110,18 +109,17 @@ module WikiMarkd
     property page_context : Wikicr::Page
 
     def initialize(
-         @time = false,
-         @gfm = false,
-         @toc = false,
-         @smart = false,
-         @source_pos = false,
-         @safe = false,
-         @prettyprint = false,
-         @base_url = nil,
-         @page_index = nil,
-         @page_context = nil,
-       )
-      # puts "> Options.new Here you go <"
+      @time = false,
+      @gfm = false,
+      @toc = false,
+      @smart = false,
+      @source_pos = false,
+      @safe = false,
+      @prettyprint = false,
+      @base_url = nil,
+      @page_index = nil,
+      @page_context = nil
+    )
     end
   end
 
@@ -134,6 +132,7 @@ module WikiMarkd
   end
 
   include Markd
+
   def self.to_html(source : String, options = Options.new)
     return "" if source.empty?
     document = Parser.parse(source, options)
