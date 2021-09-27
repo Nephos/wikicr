@@ -10,7 +10,7 @@ shards:
 
   kemal:
     git: https://github.com/kemalcr/kemal.git
-    version: 1.0.0+git.commit.218be2422172d330feb62c6a8abc7df5402fdb84
+    version: 1.1.0+git.commit.5e2efec0503622267b57d03fe7d5151000d3bf47
 
   kemal-flash:
     git: https://github.com/nephos/kemal-flash.git
@@ -20,13 +20,9 @@ shards:
     git: https://github.com/kemalcr/kemal-session.git
     version: 1.0.0+git.commit.2ebaf68ed48da763a9cdd0f8dcbc6347981e115d
 
-  kilt:
-    git: https://github.com/jeromegn/kilt.git
-    version: 0.6.1
-
   markd:
     git: https://github.com/icyleaf/markd.git
-    version: 0.4.0+git.commit.f300c21a847a661c301bc80cf5cb0ef3d360c034
+    version: 0.4.1+git.commit.0748b227595fd6ad15174d4e2f6308049eaaa8a6
 
   radix:
     git: https://github.com/luislavena/radix.git
