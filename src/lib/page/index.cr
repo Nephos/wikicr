@@ -17,9 +17,13 @@ struct Wikicr::Page
     # Find a matching *text* into the Index.
     # If no matching content, return a default value.
     def find(text : String, context : Page) : {String, String}
-      found = find_by_title text, context
-      return {found.title, found.url} unless found.nil?
-      {text, "#{context.real_url_dirname}/#{Entry.title_to_slug text}"}
+      found = find_by_title(text, context) || find_by_url(text, context)
+      if found.nil?
+        STDERR.puts "warning: no page \"#{text}\" found"
+        {text, "#{context.real_url_dirname}/#{Entry.title_to_slug text}"}
+      else
+        return {found.title, found.url}
+      end
     end
 
     # Find the closest `Index`' `Entry` to *text* based on the entries title
@@ -27,7 +31,9 @@ struct Wikicr::Page
     private def find_by_title(text : String, context : Page) : Entry?
       # exact_matched = @entries.select{|_, entry| entry.title == text }.values
       # return choose_closer_url(exact_matched, context) unless exact_matched.empty?
-      slug_matched = @entries.select { |_, entry| entry.slug == Index::Entry.title_to_slug(text) }.values
+      slug_matched = @entries.select { |_, entry|
+        entry.slug == Index::Entry.title_to_slug(text)
+      }.values
       return choose_closer_url(slug_matched, context) unless slug_matched.empty?
       nil
     end
@@ -44,6 +50,14 @@ struct Wikicr::Page
         return i if from[i] != to[i]
       end
       return from.size
+    end
+
+    private def find_by_url(text : String, context : Page) : Entry?
+      slug_matched = @entries.select { |_, entry|
+        entry.url == Index::Entry.title_to_slug(text)
+      }.values
+      return choose_closer_url(slug_matched, context) unless slug_matched.empty?
+      nil
     end
 
     # Add a new `Entry`.

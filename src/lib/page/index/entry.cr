@@ -1,5 +1,6 @@
 require "../table_of_content"
 require "../internal_links"
+require "../../lockable"
 
 # And Index is an object that associate a file with a lot of meta-data
 # like related url, the title, the table of content, ...

@@ -31,10 +31,18 @@ describe Wikicr::Markdown do
   end
 end
 
+index = Wikicr::Page::Index.new "/tmp/specs.index.yaml"
+
 describe WikiMarkd do
   it "basic markd patching" do
     raw = "hello <<test1>>"
     html = %Q{<p>hello <a href="http://test.cr" title="tiiitle">test1</a></p>\n}
-    WikiMarkd.to_html(raw).should eq(html)
+    WikiMarkd.to_html(raw, index).should eq(html)
+  end
+
+  it "wiki tag markd patching" do
+    raw = "hello {{test2}}"
+    html = %Q{<p>hello <a href="http://test.cr" title="tiiitle">test2</a></p>\n}
+    WikiMarkd.to_html(raw, index).should eq(html)
   end
 end
