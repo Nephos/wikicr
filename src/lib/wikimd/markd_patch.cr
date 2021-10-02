@@ -3,32 +3,60 @@ require "../page/index"
 
 module WikiMarkd
   module Rule
+    WIKI_TAG_OPENNER = /(\{\{|<<)/
+    WIKI_TAG_CLOSER  = /(\}\}|>>)/
+
+    # default must be matched last because it matches all the other tags
     WIKI_TAG = {
-      autolink: /^<<([[:graph:] ]+)>>/i,
-      default:  /^\{\{([[:graph:] ]+)\}\}/i,
+      autolink: /^#{WIKI_TAG_OPENNER}(link:)([[:graph:] ]+)#{WIKI_TAG_CLOSER}/i,
+      tag:      /^#{WIKI_TAG_OPENNER}(tag:)([[:graph:] ]+)#{WIKI_TAG_CLOSER}/i,
+      table:    /^#{WIKI_TAG_OPENNER}(table:)([[:graph:] ]+)#{WIKI_TAG_CLOSER}/i,
+      default:  /^#{WIKI_TAG_OPENNER}([[:graph:] ]+)#{WIKI_TAG_CLOSER}/i,
     }
   end
 
   class Parser::Inline < ::Markd::Parser::Inline
-    # patch the autolink <...> to add new tags
+    # patch the autolink <...>
+    # if we match a wiki tag use it, else we can fallback on default markdown behavior
     private def auto_link(node : ::Markd::Node)
       # puts "> Parser::Inline.auto_link Here you go <"
-      if text = match(Rule::WIKI_TAG[:autolink])
-        node.append_child(wiki_internal_link(text))
-      else
+      begin
+        wiki_tag(node, raise_when_no_match: true)
+      rescue
         super
       end
     end
 
-    private def wiki_tag(node : ::Markd::Node)
-      if text = match(Rule::WIKI_TAG[:default])
+    # generate a wiki tag if matching a rule
+    private def wiki_tag(node : ::Markd::Node, raise_when_no_match : Bool = false)
+      if text = match(Rule::WIKI_TAG[:tag])
+        node.append_child(wiki_keyword(text))
+      elsif text = match(Rule::WIKI_TAG[:autolink])
         node.append_child(wiki_internal_link(text))
+      elsif text = match(Rule::WIKI_TAG[:default])
+        node.append_child(wiki_internal_link(text, prefix: 0))
+      else
+        raise "No Match" if raise_when_no_match
+        node
       end
     end
 
-    private def wiki_internal_link(text : String) : ::Markd::Node
+    # generate a keyword to group pages
+    # TODO: link to a wiki page that generate a list of all pages using this keyword
+    private def wiki_keyword(text : String, prefix : Int = 4) : ::Markd::Node
       # puts "> Parser::Inline.wiki Here you go <"
-      input_title = text[2..-3]
+      input_tag = text[(2 + prefix)..-3].strip
+      node = ::Markd::Node.new(::Markd::Node::Type::HTMLInline)
+      node.text = "<span class=\"badge badge-primary\">#{input_tag}</span>\n"
+      node
+    end
+
+    # generate an internal link using the page_index to find a page
+    # the page is related to the page context (option of the parser)
+    # if the page is not found it will link to a new page based on the find algorithm
+    private def wiki_internal_link(text : String, prefix : Int = 5) : ::Markd::Node
+      # puts "> Parser::Inline.wiki Here you go <"
+      input_title = text[(2 + prefix)..-3]
       target_page = page_index.find input_title, page_context
       node = ::Markd::Node.new(::Markd::Node::Type::Link)
       node.data["title"] = target_page[0]
