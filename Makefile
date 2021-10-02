@@ -20,5 +20,7 @@ doc:
 	crystal docs
 clean:
 	rm $(NAME)
+format:
+	crystal tool format
 
-.PHONY: all run build release test deps deps_update clean doc
+.PHONY: all run build release test deps deps_update clean doc format
