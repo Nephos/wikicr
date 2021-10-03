@@ -1,4 +1,5 @@
 require "./application_controller"
+require "../lib/wikimd/*"
 
 class PagesController < ApplicationController
   # get /sitemap
@@ -36,8 +37,12 @@ class PagesController < ApplicationController
   end
 
   private def show_show(page)
-    body_html = Wikicr::Markdown.to_html page.read, page, Wikicr::PAGES.load!
-    Wikicr::ACL.load!
+    index = Wikicr::PAGES.load!
+    body_html = ::WikiMarkd.to_html(
+      page.read,
+      ::WikiMarkd::Options.new(page_index: index, page_context: page),
+    )
+
     groups_read = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Read, true
     groups_write = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Write, true
     history << page
