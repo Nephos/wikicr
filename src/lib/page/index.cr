@@ -9,22 +9,36 @@ struct Wikicr::Page
     include YAML::Serializable
     property file : String
     property entries : Hash(String, Entry) # path, entry
+    property find_index : Hash(String, String)
+    property find_tags : Hash(String, Array(String))
 
     def initialize(@file : String)
       @entries = {} of String => Entry
+      @find_index = Hash(String, String).new
+      @find_tags = Hash(String, Array(String)).new
     end
 
     # Find a matching *text* into the Index.
     # If no matching content, return a default value.
-    def find(text : String, context : Page) : {String, String}
+    def find(text : String, context : Page) : Index::Entry
       found = find_by_title(text, context) || find_by_url(text, context)
       if found.nil?
         STDERR.puts "warning: no page \"#{text}\" found"
-        {text, "#{context.real_url_dirname}/#{Entry.title_to_slug text}"}
+        Index::Entry.new(
+          title: text,
+          url: "#{context.real_url_dirname}/#{Entry.title_to_slug text}",
+          path: "#{context.dirname}/#{Entry.title_to_slug text}.md",
+        )
       else
-        return {found.title, found.url}
+        return found
       end
     end
+
+    # Find a matching *text* into the Index.
+    # If no matching content, return a default value.
+    # def all_by_tag(tag : String, context : Page) : Array(Page)
+    #   found = find_tags[tag]? || [] of String
+    # end
 
     # Find the closest `Index`' `Entry` to *text* based on the entries title
     # and searching for the closer url as possible to the context

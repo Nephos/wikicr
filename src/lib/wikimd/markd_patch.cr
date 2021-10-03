@@ -59,9 +59,9 @@ module WikiMarkd
       input_title = text[(2 + prefix)..-3]
       target_page = page_index.find input_title, page_context
       node = ::Markd::Node.new(::Markd::Node::Type::Link)
-      node.data["title"] = target_page[0]
-      node.data["destination"] = target_page[1]
-      node.append_child(text(target_page[0]))
+      node.data["title"] = target_page.title
+      node.data["destination"] = target_page.url
+      node.append_child(text(target_page.title))
       node
     end
 
