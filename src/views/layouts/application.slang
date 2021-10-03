@@ -11,6 +11,8 @@ html
     / Bootstrap
     link rel="stylesheet" href="/assets/stylesheet/bootstrap.min.css"
     link rel="stylesheet" href="/assets/stylesheet/bootstrap-theme.min.css"
+    - if ENV["INVERT_THEME"]? == "true"
+      link rel="stylesheet" href="/assets/stylesheet/invert.css"
     script src="/assets/javascript/bootstrap.min.js"
     / Custom
     link rel="stylesheet" href="/assets/stylesheet/base.css"

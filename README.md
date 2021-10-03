@@ -28,6 +28,7 @@ Verify that you have crystal v1.0.0 or greater installed, as well as shards and 
 ### Run the server
 
     ./wikicr --port 3000
+    INVERT_THEME=true ./wikicr --port 3000 # dark mode
 
 ### Verify your files
 
