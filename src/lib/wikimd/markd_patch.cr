@@ -47,7 +47,7 @@ module WikiMarkd
       # puts "> Parser::Inline.wiki Here you go <"
       input_tag = text[(2 + prefix)..-3].strip
       node = ::Markd::Node.new(::Markd::Node::Type::HTMLInline)
-      node.text = "<span class=\"badge badge-primary\">#{input_tag}</span>\n"
+      node.text = "<a class=\"badge badge-primary\" href=\"/tags/#{input_tag}\">#{input_tag}</a>\n"
       node
     end
 
