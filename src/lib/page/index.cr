@@ -6,29 +6,29 @@ require "./index/entry"
 # like related url, the title, the table of content, ...
 struct Wikicr::Page
   class Index < Lockable
+    alias Entries = Hash(String, Entry) # path, entry
+
     include YAML::Serializable
     property file : String
-    property entries : Hash(String, Entry) # path, entry
-    property find_index : Hash(String, String)
-    property find_tags : Hash(String, Array(String))
+    property entries : Entries
+
+    # property find_index : Hash(String, String)
+    # property find_tags : Hash(String, Array(String))
 
     def initialize(@file : String)
-      @entries = {} of String => Entry
-      @find_index = Hash(String, String).new
-      @find_tags = Hash(String, Array(String)).new
+      @entries = Entries.new
+      # @find_index = of String => String
+      # @find_tags = of String => Array(String)
     end
 
     # Find a matching *text* into the Index.
     # If no matching content, return a default value.
-    def one_by_title_or_url(text : String, context : Page) : Index::Entry
+    def one_by_title_or_url(text : String, context : Page, raise_not_found : Bool = false) : Index::Entry
       found = find_by_title(text, context) || find_by_url(text, context)
       if found.nil?
+        raise "Page not found" if raise_not_found
         STDERR.puts "warning: no page \"#{text}\" found"
-        Index::Entry.new(
-          title: text,
-          url: "#{context.real_url_dirname}/#{Entry.title_to_slug text}",
-          path: "#{context.dirname}/#{Entry.title_to_slug text}.md",
-        )
+        Index::Entry.from_context(context, text)
       else
         return found
       end
@@ -37,25 +37,39 @@ struct Wikicr::Page
     # Find a specific url into the Index.
     # If no matching content, return a default value.
     # If the page is not found, the title of the entry will be the default_title or the url
-    def one_by_url(url : String, context : Page, default_title : String? = nil) : Index::Entry
+    def one_by_url(url : String, context : Page, default_title : String? = nil, raise_not_found : Bool = false) : Index::Entry
       found = find_by_url(url, context)
       if found.nil?
+        raise "Page not found" if raise_not_found
         STDERR.puts "warning: no page \"#{url}\" found"
-        Index::Entry.new(
-          title: default_title || url,
-          url: "#{context.real_url_dirname}/#{Entry.title_to_slug url}",
-          path: "#{context.dirname}/#{Entry.title_to_slug url}.md",
-        )
+        title = default_title || url
+        Index::Entry.from_context(context, title, url)
       else
         return found
       end
     end
 
+    TAG_SIGN_REQUIRE = '+'
+    TAG_SIGN_FORBIDE = '-'
+    TAG_SIGNS        = {
+      TAG_SIGN_REQUIRE,
+      TAG_SIGN_FORBIDE,
+    }
+
     # Find a matching *text* into the Index.
     # If no matching content, return a default value.
-    # def all_by_tag(tag : String, context : Page) : Array(Page)
-    #   found = find_tags[tag]? || [] of String
-    # end
+    # @param tag_line must be a "tag +andtagx -butnottagy ortag3"
+    def all_by_tags(tags_line : String, context : Page) : Entries
+      tags = tags_line.split(' ')
+      required_tags = tags.select { |tag| tag[0] == TAG_SIGN_REQUIRE }.map { |tag| tag[1..-1] }
+      forbidden_tags = tags.select { |tag| tag[0] == TAG_SIGN_FORBIDE }.map { |tag| tag[1..-1] }
+      at_least_one_tags = tags.select { |tag| !TAG_SIGNS.includes? tag[0] }
+      @entries.select do |url, entry|
+        (entry.tags & required_tags).size == required_tags.size &&
+          (entry.tags & forbidden_tags).size == 0 &&
+          (entry.tags & at_least_one_tags).size > 0
+      end
+    end
 
     # Find the closest `Index`' `Entry` to *text* based on the entries title
     # and searching for the closer url as possible to the context

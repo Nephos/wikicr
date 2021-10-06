@@ -6,19 +6,29 @@ require "../../lockable"
 struct Wikicr::Page
   class Index < Lockable
     class Entry
+      alias Tag = String
+      alias Tags = Array(Tag)
+
       include YAML::Serializable
       property path : String  # path of the file /srv/wiki/data/xxx
       property url : String   # real url of the page /pages/xxx
       property title : String # Any title
       property slug : String  # Exact matching title
       property toc : Page::TableOfContent::Toc
-      property tags : Array(String)
+      property tags : Tags
 
-      def initialize(@path, @url, @title, toc : Bool = false)
+      def initialize(@path, @url, @title, toc : Bool = false, @tags : Tags = Tags.new)
         @slug = Entry.title_to_slug title
         @toc = toc ? Page::TableOfContent.toc(@path) : Page::TableOfContent::Toc.new
-        # @intlinks = Page::InternalLinks::LinkList.new
-        @tags = [] of String
+      end
+
+      def self.from_context(context : Page, title : String, url : String? = nil)
+        url = url || title
+        new(
+          title: title,
+          url: File.join(context.real_url_dirname, Entry.title_to_slug(url)),
+          path: File.join(context.dirname, "#{Entry.title_to_slug(url)}.md"),
+        )
       end
 
       def self.title_to_slug(title : String) : String
