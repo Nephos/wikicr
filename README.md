@@ -2,6 +2,8 @@
 
 # wikicr
 
+[![Build Status](https://drone.sceptique.eu/api/badges/Sceptique/wikicr/status.svg)](https://drone.sceptique.eu/Sceptique/wikicr)
+
 Wiki in crystal and markdown
 
 The pages of the wiki are written in markdown and committed on the git repository where it is started.

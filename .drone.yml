@@ -1,0 +1,10 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: crystallang/crystal:latest
+  environment:
+  commands:
+  - make deps
+  - make test
