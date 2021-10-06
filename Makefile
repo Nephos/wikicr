@@ -9,7 +9,7 @@ build:
 release:
 	crystal build src/$(NAME).cr --stats --release
 test:
-	crystal spec
+	crystal spec --error-trace
 deps:
 	shards install
 deps_update:

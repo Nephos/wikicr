@@ -28,8 +28,8 @@ struct Wikicr::Page
     end
 
     def self.get_link(begin_link_text, page_search_text, index, page) : Link
-      _, u = index.find page_search_text, page
-      {begin_link_text, u}
+      entry = index.find_by_title_or_url page_search_text, page
+      {begin_link_text, entry.url}
     end
   end
 end

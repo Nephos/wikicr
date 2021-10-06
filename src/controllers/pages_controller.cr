@@ -38,10 +38,7 @@ class PagesController < ApplicationController
 
   private def show_show(page)
     index = Wikicr::PAGES.load!
-    body_html = ::WikiMarkd.to_html(
-      page.read,
-      ::WikiMarkd::Options.new(page_index: index, page_context: page),
-    )
+    body_html = Wikicr::MarkdPatch.to_html(input: page.read, index: index, context: page)
 
     groups_read = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Read, true
     groups_write = Wikicr::ACL.groups_having_any_access_to page.real_url, Acl::Perm::Write, true

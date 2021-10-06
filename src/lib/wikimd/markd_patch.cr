@@ -1,7 +1,7 @@
 require "markd"
 require "../page/index"
 
-module WikiMarkd
+module Wikicr::MarkdPatch
   module Rule
     WIKI_TAG_OPENNER = /(\{\{|<<)/
     WIKI_TAG_CLOSER  = /(\}\}|>>)/
@@ -56,8 +56,17 @@ module WikiMarkd
     # if the page is not found it will link to a new page based on the find algorithm
     private def wiki_internal_link(text : String, prefix : Int = 5) : ::Markd::Node
       # puts "> Parser::Inline.wiki Here you go <"
-      input_title = text[(2 + prefix)..-3]
-      target_page = page_index.find input_title, page_context
+      input_text = text[(2 + prefix)..-3]
+      input_array = input_text.split('|', 2)
+      target_page =
+        # we have a {{title|url}}
+        if input_array.size == 2
+          input_title = input_array[0]
+          input_url = input_array[1]
+          page_index.one_by_url input_url, page_context, input_title
+        else
+          page_index.one_by_title_or_url input_text, page_context
+        end
       node = ::Markd::Node.new(::Markd::Node::Type::Link)
       node.data["title"] = target_page.title
       node.data["destination"] = target_page.url
@@ -161,10 +170,17 @@ module WikiMarkd
 
   include Markd
 
-  def self.to_html(source : String, options = Options.new)
+  def self.to_html(source : String, options = Options.new) : String
     return "" if source.empty?
     document = Parser.parse(source, options)
     renderer = HTMLRenderer.new(options)
     renderer.render(document)
+  end
+
+  def self.to_html(input : String, context : Wikicr::Page, index : Wikicr::Page::Index) : String
+    to_html(
+      input,
+      Options.new(page_index: index, page_context: context),
+    )
   end
 end

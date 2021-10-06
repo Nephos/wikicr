@@ -20,7 +20,7 @@ struct Wikicr::Page
 
     # Find a matching *text* into the Index.
     # If no matching content, return a default value.
-    def find(text : String, context : Page) : Index::Entry
+    def one_by_title_or_url(text : String, context : Page) : Index::Entry
       found = find_by_title(text, context) || find_by_url(text, context)
       if found.nil?
         STDERR.puts "warning: no page \"#{text}\" found"
@@ -28,6 +28,23 @@ struct Wikicr::Page
           title: text,
           url: "#{context.real_url_dirname}/#{Entry.title_to_slug text}",
           path: "#{context.dirname}/#{Entry.title_to_slug text}.md",
+        )
+      else
+        return found
+      end
+    end
+
+    # Find a specific url into the Index.
+    # If no matching content, return a default value.
+    # If the page is not found, the title of the entry will be the default_title or the url
+    def one_by_url(url : String, context : Page, default_title : String? = nil) : Index::Entry
+      found = find_by_url(url, context)
+      if found.nil?
+        STDERR.puts "warning: no page \"#{url}\" found"
+        Index::Entry.new(
+          title: default_title || url,
+          url: "#{context.real_url_dirname}/#{Entry.title_to_slug url}",
+          path: "#{context.dirname}/#{Entry.title_to_slug url}.md",
         )
       else
         return found
