@@ -85,7 +85,8 @@ struct Wikicr::Page
 
     private def find_by_url(text : String, context : Page) : Entry?
       slug_matched = @entries.select { |_, entry|
-        entry.url == Index::Entry.title_to_slug(text)
+        entry.url == Index::Entry.title_to_slug(text) ||
+          File.basename(entry.url) == Index::Entry.title_to_slug(text)
       }.values
       return choose_closer_url(slug_matched, context) unless slug_matched.empty?
       nil
