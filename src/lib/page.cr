@@ -12,7 +12,7 @@ require "./page/*"
 # must be stored.
 struct Wikicr::Page
   include Wikicr::Page::TableOfContent
-  include Wikicr::Page::InternalLinks
+  # include Wikicr::Page::InternalLinks
 
   # Directory where the pages are stored
   PAGES_SUB_DIRECTORY = "pages/"
@@ -84,12 +84,12 @@ struct Wikicr::Page
     File.dirname @path
   end
 
-  # Url without the page itself (/pages/test/home becomes /pages/test)
+  # Url without the page itself (/pages/test/home becomes /test)
   def url_dirname
     File.dirname @url
   end
 
-  # Real url without the page itself (/test/home becomes /test)
+  # Real url without the page itself (/pages/test/home becomes /pages/test)
   def real_url_dirname
     File.dirname @real_url
   end

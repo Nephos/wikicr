@@ -1,5 +1,4 @@
 require "../table_of_content"
-require "../internal_links"
 require "../../lockable"
 
 # And Index is an object that associate a file with a lot of meta-data
@@ -14,12 +13,11 @@ struct Wikicr::Page
       property slug : String  # Exact matching title
       property toc : Page::TableOfContent::Toc
       property tags : Array(String)
-      property intlinks : Page::InternalLinks::LinkList
 
       def initialize(@path, @url, @title, toc : Bool = false)
         @slug = Entry.title_to_slug title
         @toc = toc ? Page::TableOfContent.toc(@path) : Page::TableOfContent::Toc.new
-        @intlinks = Page::InternalLinks::LinkList.new
+        # @intlinks = Page::InternalLinks::LinkList.new
         @tags = [] of String
       end
 
