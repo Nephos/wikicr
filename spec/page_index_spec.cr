@@ -14,7 +14,12 @@ describe Wikicr::Page::Index do
     index.entries["page 3"] = entries[2]
     index.entries["page 4"] = entries[3]
 
-    title2 = index.find_by_title_or_url "title 2", page
+    title2 = index.one_by_title_or_url "title 2", page
+    url2 = index.one_by_title_or_url "url 2", page
+    urlnil = index.one_by_title_or_url "url nil", page
+
     title2.should eq entries[1]
+    url2.should eq entries[1]
+    urlnil.should eq nil
   end
 end

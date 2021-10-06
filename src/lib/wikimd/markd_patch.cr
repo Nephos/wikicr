@@ -58,8 +58,8 @@ module Wikicr::MarkdPatch
       # puts "> Parser::Inline.wiki Here you go <"
       input_text = text[(2 + prefix)..-3]
       input_array = input_text.split('|', 2)
-      target_page =
-        # we have a {{title|url}}
+      target_page = # we have a {{title|url}}
+
         if input_array.size == 2
           input_title = input_array[0]
           input_url = input_array[1]
