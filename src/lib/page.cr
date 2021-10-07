@@ -10,9 +10,9 @@ require "./page/*"
 # Is is can also jails the path into the *OPTIONS.basedir* to be sure that
 # there is no attack by writing files outside of the directory where the pages
 # must be stored.
-struct Wikicr::Page
-  include Wikicr::Page::TableOfContent
-  # include Wikicr::Page::InternalLinks
+class Wikicr::Page
+  include Wikicr::Page::TableOfContentReader
+  include Wikicr::Page::TagsReader
 
   # Directory where the pages are stored
   PAGES_SUB_DIRECTORY = "pages/"
@@ -32,7 +32,12 @@ struct Wikicr::Page
   # Title of the page
   getter title : String
 
-  def initialize(url : String, real_url : Bool = false, read_title : Bool = false)
+  # A way to hold the tags without having to compute it again and again
+  # you need to fill it yourself (with the wikimd patch)
+  property tags : Array(String)
+
+  def initialize(url : String, real_url : Bool = false, parse_title : Bool = false)
+    @tags = [] of String
     url = Page.sanitize(url)
     if real_url
       @real_url = url
@@ -43,10 +48,10 @@ struct Wikicr::Page
     end
     @path = Page.url_to_file @url
     @title = File.basename @url
-    @title = Page.read_title(@path) || @title if read_title && File.exists? @path
+    @title = Page.parse_title(@path) || @title if parse_title && File.exists? @path
   end
 
-  def self.read_title(path : String) : String?
+  def self.parse_title(path : String) : String?
     title = File.read(path).split("\n").find { |l| l.starts_with? "# " }
     title && title.strip("# ").strip
   end
@@ -55,8 +60,8 @@ struct Wikicr::Page
     Index::Entry.title_to_slug URI.decode_www_form(url)
   end
 
-  def read_title!
-    @title = Page.read_title(@path) || @title if File.exists?(@path)
+  def parse_title!
+    @title = Page.parse_title(@path) || @title if File.exists?(@path)
   end
 
   # translate a name ("/test/title" for example)

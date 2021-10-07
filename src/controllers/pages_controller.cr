@@ -21,7 +21,7 @@ class PagesController < ApplicationController
   def show
     acl_permit! :read
     flash["danger"] = params.query["flash.danger"] if params.query["flash.danger"]?
-    page = Wikicr::Page.new url: params.url["path"], read_title: true
+    page = Wikicr::Page.new url: params.url["path"], parse_title: true
     if (params.query["edit"]?) || !page.exists?
       show_edit(page)
     else
@@ -49,7 +49,7 @@ class PagesController < ApplicationController
   # post /pages/*path
   def update
     acl_permit! :write
-    page = Wikicr::Page.new url: params.url["path"], read_title: true
+    page = Wikicr::Page.new url: params.url["path"], parse_title: true
     if params.body["rename"]?
       update_rename(page)
     elsif (params.body["body"]?.to_s.empty?)
@@ -63,7 +63,12 @@ class PagesController < ApplicationController
     if !params.body["new_path"]?.to_s.strip.empty?
       # TODO: verify if the user can write on new_path
       # TODO: if new_path do not begin with /, relative rename to the current path
-      page.rename current_user, params.body["new_path"]
+      Wikicr::PAGES.transaction! do |index|
+        index.delete page
+        page.rename current_user, params.body["new_path"]
+        page.parse_tags! index
+        index.add page
+      end
       flash["success"] = "The page #{page.url} has been moved to #{params.body["new_path"]}."
       redirect_to "/pages/#{params.body["new_path"]}"
     else
@@ -88,8 +93,11 @@ class PagesController < ApplicationController
   private def update_edit(page)
     begin
       page.write current_user, params.body["body"]
-      page.read_title!
-      Wikicr::PAGES.transaction! { |index| index.add page }
+      page.parse_title!
+      Wikicr::PAGES.transaction! do |index|
+        page.parse_tags! index
+        index.add page
+      end
       flash["success"] = "The page #{page.url} has been updated."
       redirect_to page.real_url
     rescue err

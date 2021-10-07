@@ -45,10 +45,17 @@ module Wikicr::MarkdPatch
     # TODO: link to a wiki page that generate a list of all pages using this keyword
     private def wiki_keyword(text : String, prefix : Int = 4) : ::Markd::Node
       # puts "> Parser::Inline.wiki Here you go <"
-      input_tag = text[(2 + prefix)..-3].strip
-      node = ::Markd::Node.new(::Markd::Node::Type::HTMLInline)
-      node.text = "<a class=\"badge badge-primary\" href=\"/tags/#{input_tag}\">#{input_tag}</a>\n"
-      node
+      input_tags = text[(2 + prefix)..-3].strip
+      tags_node = ::Markd::Node.new(::Markd::Node::Type::HTMLInline)
+      input_tags.split(' ').each do |input_tag|
+        puts "page context.tags = #{page_context.tags}"
+        page_context.tags << input_tag
+        puts "added << #{input_tag}, now #{page_context.tags}"
+        tags_node.text += "<a class=\"badge badge-primary\" href=\"/tags/#{input_tag}\">#{input_tag}</a>"
+      end
+      tags_node.text += "\n"
+
+      tags_node
     end
 
     # generate an internal link using the page_index to find a page
@@ -145,6 +152,7 @@ module Wikicr::MarkdPatch
   class Options < ::Markd::Options
     property page_index : Wikicr::Page::Index
     property page_context : Wikicr::Page
+    property parse_tags : Bool
 
     def initialize(
       @time = false,
@@ -156,7 +164,8 @@ module Wikicr::MarkdPatch
       @prettyprint = false,
       @base_url = nil,
       @page_index = nil,
-      @page_context = nil
+      @page_context = nil,
+      @parse_tags = false
     )
     end
   end
@@ -178,10 +187,16 @@ module Wikicr::MarkdPatch
     renderer.render(document)
   end
 
-  def self.to_html(input : String, context : Wikicr::Page, index : Wikicr::Page::Index) : String
+  def self.to_html(
+    input : String,
+    context : Wikicr::Page,
+    index : Wikicr::Page::Index,
+    parse_tags : Bool = false
+  ) : String
+    context.tags = [] of String # reset the tags first
     to_html(
       input,
-      Options.new(page_index: index, page_context: context),
+      Options.new(page_index: index, page_context: context, parse_tags: parse_tags),
     )
   end
 end

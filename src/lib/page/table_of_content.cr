@@ -1,11 +1,11 @@
-struct Wikicr::Page
-  module TableOfContent
+class Wikicr::Page
+  module TableOfContentReader
     alias TocLine = {Int32, String}
     alias Toc = Array(TocLine)
 
     # The table of content of the file
     def toc : Toc
-      TableOfContent.toc @path
+      TableOfContentReader.toc @path
     end
 
     def self.toc(path : String) : Toc

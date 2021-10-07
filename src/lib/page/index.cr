@@ -4,7 +4,7 @@ require "./index/entry"
 
 # And Index is an object that associate a file with a lot of meta-data
 # like related url, the title, the table of content, ...
-struct Wikicr::Page
+class Wikicr::Page
   class Index < Lockable
     alias Entries = Hash(String, Entry) # path, entry
 
@@ -118,7 +118,13 @@ struct Wikicr::Page
 
     # Add a new `Entry`.
     def add(page : Wikicr::Page)
-      @entries[page.path] = Entry.new page.path, page.url, page.title, toc: true
+      @entries[page.path] = Entry.new(
+        path: page.path,
+        url: page.url,
+        title: page.title,
+        read_toc: true,
+        tags: page.tags,
+      )
       self
     end
 
