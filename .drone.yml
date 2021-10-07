@@ -8,3 +8,4 @@ steps:
   commands:
   - make deps
   - make test
+  - make build
