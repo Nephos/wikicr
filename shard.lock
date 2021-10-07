@@ -20,6 +20,10 @@ shards:
     git: https://github.com/kemalcr/kemal-session.git
     version: 1.0.0+git.commit.2ebaf68ed48da763a9cdd0f8dcbc6347981e115d
 
+  kilt:
+    git: https://github.com/jeromegn/kilt.git
+    version: 0.6.1
+
   markd:
     git: https://github.com/icyleaf/markd.git
     version: 0.4.1+git.commit.0748b227595fd6ad15174d4e2f6308049eaaa8a6

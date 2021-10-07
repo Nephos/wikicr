@@ -12,6 +12,8 @@ dependencies:
   kemal:
     github: kemalcr/kemal
     branch: master
+  kilt:
+    github: jeromegn/kilt
   slang:
     github: jeromegn/slang
     branch: master
