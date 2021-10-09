@@ -8,6 +8,8 @@ html
 
     / jQuery
     script src="/assets/javascript/jquery-3.2.1.min.js"
+    / FontAwesome
+    link rel="stylesheet" href="/assets/stylesheet/font-awesome.min.css"
     / Bootstrap
     link rel="stylesheet" href="/assets/stylesheet/bootstrap.min.css"
     link rel="stylesheet" href="/assets/stylesheet/bootstrap-theme.min.css"

@@ -25,8 +25,8 @@ shards:
     version: 0.6.1
 
   markd:
-    git: https://github.com/icyleaf/markd.git
-    version: 0.4.1+git.commit.0748b227595fd6ad15174d4e2f6308049eaaa8a6
+    git: https://github.com/nephos/markd.git
+    version: 0.4.1+git.commit.8b67caf4e6ecd89d9dc533187acacf7bc835d05f
 
   radix:
     git: https://github.com/luislavena/radix.git

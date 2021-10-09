@@ -17,4 +17,10 @@ describe Wikicr::MarkdPatch do
     html = %Q{<p>hello <a href="/test2" title="title 2">title 2</a></p>\n}
     Wikicr::MarkdPatch.to_html(raw, page, index).should eq(html)
   end
+
+  it "section anchors" do
+    raw = "# titleA\n1234567890\n## titleB"
+    html = %Q{<h1><a id="anchor-titleA" class="anchor" href="#anchor-titleA"></a>titleA</h1>\n<p>1234567890</p>\n<h2><a id="anchor-titleB" class="anchor" href="#anchor-titleB"></a>titleB</h2>\n}
+    Wikicr::MarkdPatch.to_html(raw, page, index).should eq(html)
+  end
 end

@@ -157,7 +157,7 @@ module Wikicr::MarkdPatch
     def initialize(
       @time = false,
       @gfm = false,
-      @toc = false,
+      @toc = true,
       @smart = false,
       @source_pos = false,
       @safe = false,
