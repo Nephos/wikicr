@@ -8,7 +8,7 @@ module Wikicr::Helpers::Page
 
   # TODO: move that
   def create_toc_line(line, current_id, ends = true)
-    "<li><a href=\"#section-#{current_id + 1}\">#{line}</a>#{ends ? "</li>" : nil}\n"
+    "<li><a href=\"#anchor-#{line}\">#{line}</a>#{ends ? "</li>" : nil}\n"
   end
 
   # TODO: move that
