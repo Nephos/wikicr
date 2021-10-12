@@ -11,7 +11,7 @@ module Wikicr::Helpers::History
 
     def parse(history_string : String) : self
       history_string.split(SEPARATOR).each do |page|
-        push(page)
+        push(URI.decode(page))
       end
 
       self
@@ -23,7 +23,7 @@ module Wikicr::Helpers::History
       shift_amount = size - KEEP_ENTRIES
       shift(shift_amount) if shift_amount > 0
 
-      @app.set_cookie name: "user.history", value: to_s, expires: 14.days.from_now, path: "/pages"
+      @app.set_cookie name: "user.history", value: URI.encode(to_s), expires: 14.days.from_now, path: "/pages"
 
       self
     end

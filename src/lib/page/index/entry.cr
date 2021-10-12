@@ -33,7 +33,7 @@ class Wikicr::Page
       end
 
       def self.title_to_slug(title : String) : String
-        title.gsub(/[^[:alnum:]^\/]/, "-").gsub(/-+/, '-').downcase
+        title.gsub(/[\s\.]/, '-').gsub(/-+/, '-').downcase
       end
     end
   end

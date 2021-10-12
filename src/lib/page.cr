@@ -56,8 +56,10 @@ class Wikicr::Page
     title && title.strip("# ").strip
   end
 
+  # basic treatment of the url
+  # it is NOT a security measure
   def self.sanitize(url : String)
-    Index::Entry.title_to_slug URI.decode_www_form(url)
+    Index::Entry.title_to_slug url
   end
 
   def parse_title!
