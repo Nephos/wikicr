@@ -59,6 +59,7 @@ h5:hover > a.anchor::before,
 h6:hover > a.anchor::before {
   font-family: "FontAwesome";
   content: "\f0c1";
+  margin: -20px; /* this put the link in the padding of the content <insert circus music here> <laugh> */
 }
 
 a.anchor {
