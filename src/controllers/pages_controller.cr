@@ -63,14 +63,15 @@ class PagesController < ApplicationController
     if !params.body["new_path"]?.to_s.strip.empty?
       # TODO: verify if the user can write on new_path
       # TODO: if new_path do not begin with /, relative rename to the current path
+      renamed_page = page # will be change in the transaction
       Wikicr::PAGES.transaction! do |index|
         index.delete page
-        page.rename current_user, params.body["new_path"]
-        page.parse_tags! index
-        index.add page
+        renamed_page = page.rename current_user, params.body["new_path"]
+        renamed_page.parse_tags! index
+        index.add renamed_page
       end
-      flash["success"] = "The page #{page.url} has been moved to #{params.body["new_path"]}."
-      redirect_to "/pages/#{params.body["new_path"]}"
+      flash["success"] = "The page #{page.url} has been moved to #{renamed_page.url}."
+      redirect_to renamed_page.real_url # "/pages/#{params.body["new_path"]}"
     else
       redirect_to page.real_url
     end

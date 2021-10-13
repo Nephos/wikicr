@@ -109,13 +109,14 @@ class Wikicr::Page
 
   # TODO: verify if the new_page already exists
   # Move the current page into another place and commit
-  def rename(user : Wikicr::User, new_url)
+  def rename(user : Wikicr::User, new_url) : Page
     self.jail
     new_page = Wikicr::Page.new new_url
     new_page.jail
     Dir.mkdir_p File.dirname new_page.path
     File.rename self.path, new_page.path
     Wikicr::Git.commit! user, message: "rename #{@url}", files: [@path, new_page.path]
+    new_page
   end
 
   # Writes into the *file*, and commit.
