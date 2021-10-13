@@ -26,3 +26,13 @@ nav class="navbar navbar-default"
             button.btn.btn-md
               span.glyphicon.glyphicon-search
               | Search
+
+nav(aria-label="breadcrumb")
+  ol.breadcrumb
+    li.breadcrumb-item.active
+      | History
+    - history.each do |page_url|
+      li.breadcrumb-item
+        a href=page_url
+          - root_page = Wikicr::Page.new "/"
+          = Wikicr::PAGES.load!.one_by_url(page_url[7..-1], root_page).title

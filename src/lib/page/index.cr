@@ -106,12 +106,12 @@ class Wikicr::Page
       nil
     end
 
-    # Add a new `Entry`.
+    # Access to an existing `Entry`.
     def [](page : Wikicr::Page) : Index::Entry
       @entries[page.path]
     end
 
-    # Add a new `Entry`.
+    # Access to an existing `Entry`.
     def []?(page : Wikicr::Page) : Index::Entry?
       @entries[page.path]?
     end

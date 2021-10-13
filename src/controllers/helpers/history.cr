@@ -11,7 +11,7 @@ module Wikicr::Helpers::History
 
     def parse(history_string : String) : self
       history_string.split(SEPARATOR).each do |page|
-        push(URI.decode(page))
+        push(page)
       end
 
       self
@@ -36,7 +36,7 @@ module Wikicr::Helpers::History
   def history : HistoryStorage
     current_history = cookies["user.history"]?
     if current_history
-      HistoryStorage.new(self).parse(current_history.value)
+      HistoryStorage.new(self).parse(URI.decode(current_history.value))
     else
       HistoryStorage.new(self)
     end
